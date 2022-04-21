@@ -28,8 +28,7 @@ ID="$(cat $IP_CERT.resp | jq -r '.id')"
 URL=$(cat $IP_CERT.resp | jq -r ".validation.other_methods.\"$IP_CERT\".file_validation_url_http")
 FILE_NAME=$(basename $URL)
 cat ./$IP_CERT.resp | jq -r ".validation.other_methods.\"$IP_CERT\".file_validation_content|join(\"\n\")" > $HTTP_DIR/.well-known/pki-validation/$FILE_NAME
-#echo "等待10秒以确保生效"
-#sleep 10
+
 curl -s -X GET http://api.zerossl.com/certificates/${ID}?access_key=$ZEROSSL_KEY -o status.resp
 CERT_STATUS=$(cat status.resp | jq -r '.status')
 
